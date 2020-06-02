@@ -13,7 +13,7 @@ public class UserService {
     @Autowired
     private UserMapper userMapper;
 
-    @MyTranscation
+
     public int insert(String userName){
         return userMapper.insert(userName);
     }

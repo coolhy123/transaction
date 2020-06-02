@@ -15,11 +15,9 @@ import static javafx.scene.input.KeyCode.T;
 @Component
 public class TransactionUtil {
 
+    @Autowired
     private  DataSourceTransactionManager transactionManager;
 
-    public void  setTransactionManager(DataSourceTransactionManager transactionManager){
-        this.transactionManager =transactionManager;
-    }
 
 
     public  TransactionStatus begin(){

@@ -1,6 +1,7 @@
 package com.hydu.config;
 
 import com.hydu.utils.TransactionUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -15,6 +16,7 @@ import org.springframework.transaction.TransactionStatus;
  */
 @Aspect
 @Component
+@Slf4j
 public class MyTransactionAop {
 
     @Autowired
@@ -26,17 +28,20 @@ public class MyTransactionAop {
     }
 
     @Around(value = "process()")
-    public void myTransaction(ProceedingJoinPoint  joinPoint) throws Throwable{
-        TransactionStatus status = null;
+    public Object myTransaction(ProceedingJoinPoint  joinPoint) throws Throwable{
+        TransactionStatus status =  transactionUtil.begin();
         try{
-             status =  transactionUtil.begin();
-            joinPoint.proceed();
+
+          Object obj =  joinPoint.proceed();
+
             transactionUtil.commit(status);
+            log.info("aop结束");
+            return obj;
         }catch (Exception e){
             e.printStackTrace();
             transactionUtil.rollback(status);
         }
-
+return null;
     }
 
 
